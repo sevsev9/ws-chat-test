@@ -6,7 +6,7 @@
           <Message
             :from="`Hello ${this.name}!`"
             message="No messages have been sent yet..."
-            :timestamp="new Date().toTimeString().split(' ')[0]"
+            :timestamp="new Date()"
             style="margin-left: 38%"
           ></Message>
         </div>
@@ -131,6 +131,11 @@ export default {
 
     this.ws.onopen = () => {
         this.connected = true;
+        fetch('http://localhost:8000/').then(res => {
+          if (res.status === 200) {
+            console.log(res.data);
+          }
+        })
     }
   }
 }

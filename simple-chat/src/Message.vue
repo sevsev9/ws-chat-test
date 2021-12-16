@@ -13,7 +13,7 @@ export default {
   props: {
     from: String,
     message: String,
-    timestamp: String
+    timestamp: Date
   }
 }
 </script>
