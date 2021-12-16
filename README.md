@@ -17,4 +17,5 @@ You can simply build the Dockerfile configuration with the default settings by r
 
 ## Running the app
 Before running, make sure that Ports 80 and 8000 are not used.
+
 Either you can simply execute the `docker_run.sh` files in each directory.
