@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "ts-node index.ts"
+    "serve": "ts-node src/index.ts",
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",
