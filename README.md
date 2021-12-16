@@ -10,10 +10,11 @@ Each directory contains `docker_build.sh` and a Dockerfile.
 You can simply build the Dockerfile configuration with the default settings by running `./docker_build.sh`.
   - This will firstly build the app and then create a dockerfile from the sources.
 
+## Default port mapping
+- 80 -> Frontend
+- 8000 -> Backend
+
+
 ## Running the app
 Before running, make sure that Ports 80 and 8000 are not used.
-
-80 -> Frontend
-8000 -> Backend
-
 Either you can simply execute the `docker_run.sh` files in each directory.
