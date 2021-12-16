@@ -19,7 +19,8 @@ app.get('/', (req, res) => {
 
 wss.on('connection', (ws: WebSocket) => {
     // @ts-ignore
-    console.log(`New connection: ${ws._socket.remoteAddress}`)
+    console.log(`New connection: ${ws._socket.remoteAddress}`);
+    let name = "";
 
     ws.on('message', (event: string) => {
         const message:any = JSON.parse(event);
@@ -34,6 +35,7 @@ wss.on('connection', (ws: WebSocket) => {
                         err: '[Error] Name already taken.'
                     }));
                 } else {
+                    name = message.name;
                     connections.push(new Connection(message.name, ws));
                     ws.send(JSON.stringify({
                       accept: true
@@ -53,8 +55,8 @@ wss.on('connection', (ws: WebSocket) => {
     });
 
     ws.on('close', () => {
-        console.log(`closing event from '${connections.filter(e => e.ws === ws)[0].name}'`);
-        connections.splice(connections.indexOf(connections.filter(e => e.ws === ws)[0]), 1);
+        console.log(`closing event from '${name}' ${connections.length}`);
+        connections.splice(connections.indexOf(connections.filter(e => e.name === name)[0]), 1);
     })
 })
 
