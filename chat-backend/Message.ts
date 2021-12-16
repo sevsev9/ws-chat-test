@@ -1,12 +1,15 @@
 export class Message {
     timestamp: number;
-    from: string;
+    name: string;
     message: string;
 
-    constructor(from: string, timestamp: number, message: string) {
+    constructor(name: string, timestamp: number, message: string) {
         this.timestamp = timestamp
-        this.from = from
+        this.name = name
         this.message = message
     }
 
+    toJSON() {
+        return JSON.stringify({name: this.name, message: this.message, timestamp: this.timestamp})
+    }
 }
