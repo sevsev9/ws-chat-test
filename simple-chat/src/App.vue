@@ -54,6 +54,7 @@
 <script>
 import Message from "@/Message";
 
+//@Todo: Get message history from server endpoint
 
 export default {
   name: 'App',
