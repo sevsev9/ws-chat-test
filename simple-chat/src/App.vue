@@ -4,10 +4,10 @@
       <div class="message-area">
         <div v-if="this.messages.length === 0">
           <Message
-            :from="`Hello ${this.name}!`"
-            message="No messages have been sent yet..."
-            :timestamp="new Date()"
-            style="margin-left: 38%"
+              :from="`Hello ${this.name}!`"
+              message="No messages have been sent yet..."
+              :timestamp="new Date()"
+              style="margin-left: 38%"
           ></Message>
         </div>
         <div v-else>
@@ -29,7 +29,7 @@
         <h2>Online Users</h2>
         <hr>
         <ul>
-          <li v-for="e in online" :key="e">&#128994;{{e}}</li>
+          <li v-for="e in online" :key="e">&#128994;{{ e }}</li>
         </ul>
       </div>
       <div class="message-bar">
@@ -44,7 +44,9 @@
           <h1>Hello! Please enter a name to chat.</h1>
           <b-input type="text" placeholder="FunnySoldier89" v-model="name"></b-input>
 
-          <b-overlay :show="connecting"><b-button variant="primary" @click="connect">Connect</b-button></b-overlay>
+          <b-overlay :show="connecting">
+            <b-button variant="primary" @click="connect">Connect</b-button>
+          </b-overlay>
         </div>
       </template>
     </b-overlay>
@@ -66,7 +68,7 @@ export default {
       messages: [],
       ws: null,
       connected: false,
-      registered : false,
+      registered: false,
       online: [], //contains all online users' names
       connecting: false
     }
@@ -99,7 +101,7 @@ export default {
     connect() {
       this.connecting = true;
       if (this.name) {
-        if(this.connected) {
+        if (this.connected) {
           this.ws.send(JSON.stringify({init: true, name: this.name}));
         } else {
           alert('Not connected to message server yet.')
@@ -120,6 +122,9 @@ export default {
       if (msg.accept) {
         this.registered = true;
         this.connecting = false;
+        fetch('http://localhost:8000/').then(res => res.json()).then(res => {
+          this.messages = res.map(e => JSON.parse(e)).map(e => { e.timestamp = new Date(e.timestamp); return e});
+        })
       } else if (msg.err) {
         alert(msg.err);
         this.connecting = false;
@@ -130,12 +135,7 @@ export default {
     }
 
     this.ws.onopen = () => {
-        this.connected = true;
-        fetch('http://localhost:8000/').then(res => {
-          if (res.status === 200) {
-            console.log(res.data);
-          }
-        })
+      this.connected = true;
     }
   }
 }
