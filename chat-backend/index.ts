@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 
 app.get('/', (req, res) => {
     res.status(200);
-    res.send(messages);
+    res.send(JSON.stringify(messages));
     res.end();
 })
 
@@ -30,9 +30,6 @@ wss.on('connection', (ws: WebSocket) => {
 
     ws.on('message', (event: string) => {
         const message:any = JSON.parse(event);
-
-        console.log(`name: ${message.name} | msg: ${message.message}`)
-
         if (message.init) {
             if (message.name) {
                 if (connections.filter(e => e.name === message.name).length > 0) {
@@ -53,10 +50,12 @@ wss.on('connection', (ws: WebSocket) => {
                     err: '[Error] Init packet without name received.'
                 }));
             }
+        } else if (message.name && message.message) {
+            let idx = messages.push(new Message(message.name, new Date().getTime(), message.message))-1;
+            console.log(`[Messages] {New Message} ${messages[idx].toJSON()}`)
+            connections.forEach(conn => conn.ws.send(messages[idx].toJSON()));
         } else {
-            message.timestamp = Date.now();
-            messages.push(message);
-            connections.forEach(conn => conn.ws.send(JSON.stringify(message)));
+            console.log(`Got invalid message event: ${JSON.stringify(message)}`)
         }
     });
 
